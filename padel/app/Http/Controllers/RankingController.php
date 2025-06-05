@@ -2,34 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Jogador;
 use App\Models\Partida;
+use Illuminate\Http\Request;
 
 class RankingController extends Controller
 {
-    /**
-     * Exibe o ranking dos jogadores por sets vencidos.
-     */
-    public function rankingSets()
+    public function ranking()
     {
         $jogadores = Jogador::all();
+        $ranking = [];
 
-        $ranking = $jogadores->map(function ($jogador) {
-            $setsVencidos = Partida::where(function ($query) use ($jogador) {
+        foreach ($jogadores as $jogador) {
+            $vitorias = Partida::where(function($query) use ($jogador) {
                 $query->where('jogador1_id', $jogador->id)
-                      ->whereColumn('sets_jogador1', '>', 'sets_jogador2');
-            })->orWhere(function ($query) use ($jogador) {
+                      ->where('resultado', 'jogador1');
+            })->orWhere(function($query) use ($jogador) {
                 $query->where('jogador2_id', $jogador->id)
-                      ->whereColumn('sets_jogador2', '>', 'sets_jogador1');
+                      ->where('resultado', 'jogador2');
             })->count();
 
-            return [
-                'jogador' => $jogador,
-                'sets_vencidos' => $setsVencidos
+            $ranking[] = [
+                'jogador' => $jogador->nome,
+                'vitorias' => $vitorias
             ];
-        })->sortByDesc('sets_vencidos');
+        }
 
-        return view('ranking.sets', compact('ranking'));
+        // Ordenar por vitórias desc
+        usort($ranking, fn($a, $b) => $b['vitorias'] <=> $a['vitorias']);
+
+        return view('ranking.index', compact('ranking'));
     }
 }
+

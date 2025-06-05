@@ -6,6 +6,7 @@ use App\Http\Controllers\TorneioController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\RankingController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,6 +26,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Exibição do ranking por sets
     Route::get('/ranking/sets', [RankingController::class, 'rankingSets'])->name('ranking.sets');
+
+    Route::get('/torneios/{id}/gerar-partidas', [TorneioController::class, 'gerarPartidas'])->name('torneios.gerarPartidas');
+
+    Route::get('/ranking', [RankingController::class, 'ranking'])->name('ranking.index');
+
 });
 
 require __DIR__.'/auth.php';

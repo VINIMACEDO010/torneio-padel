@@ -14,7 +14,8 @@ class Partida extends Model
         'jogador1_id',
         'jogador2_id',
         'sets_jogador1',
-        'sets_jogador2'
+        'sets_jogador2',
+        'resultado'
     ];
 
     public function torneio()
@@ -31,4 +32,4 @@ class Partida extends Model
     {
         return $this->belongsTo(Jogador::class, 'jogador2_id');
     }
-}
+    

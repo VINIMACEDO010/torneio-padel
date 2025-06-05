@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="mb-4">Lista de Partidas</h1>
 
-    <a href="{{ route('partidas.create') }}" class="btn btn-primary mb-3">Nova Partida</a>
+    <a href="{{ route('torneios.gerarPartidas', $torneio->id) }}" class="btn btn-sm btn-outline-primary">Gerar Partidas</a>
 
     @if ($partidas->count())
         <table class="table table-bordered table-hover">
