@@ -2,21 +2,19 @@
 
 @section('content')
 <div class="container">
-    <h1>Editar Partida</h1>
-    <form action="{{ route('partidas.update', $partida) }}" method="POST">
+    <h1 class="mb-4">Editar Partida</h1>
+
+    <form action="{{ route('partidas.update', $partida->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="form-group">
-            <label for="sets_jogador1">Sets Jogador 1</label>
-            <input type="number" name="sets_jogador1" class="form-control" value="{{ $partida->sets_jogador1 }}" required>
+
+        <div class="mb-3">
+            <label class="form-label">Resultado</label>
+            <input type="text" name="resultado" class="form-control" value="{{ $partida->resultado }}" placeholder="Ex: 6x3, 7x6">
         </div>
 
-        <div class="form-group mt-2">
-            <label for="sets_jogador2">Sets Jogador 2</label>
-            <input type="number" name="sets_jogador2" class="form-control" value="{{ $partida->sets_jogador2 }}" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Atualizar</button>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+        <a href="{{ route('partidas.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 @endsection
