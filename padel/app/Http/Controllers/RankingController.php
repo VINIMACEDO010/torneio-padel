@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\Jogador;
+use App\Models\Partida;
 
 class RankingController extends Controller
 {
+    /**
+     * Exibe o ranking dos jogadores por sets vencidos.
+     */
     public function rankingSets()
     {
-        $ranking = DB::table('jogadors')
-            ->leftJoin('partidas as p1', 'jogadors.id', '=', 'p1.jogador1_id')
-            ->leftJoin('partidas as p2', 'jogadors.id', '=', 'p2.jogador2_id')
-            ->select('jogadors.nome',
-                DB::raw('COALESCE(SUM(p1.sets_jogador1),0) + COALESCE(SUM(p2.sets_jogador2),0) as total_sets'))
-            ->groupBy('jogadors.nome')
-            ->orderByDesc('total_sets')
-            ->get();
+        $jogadores = Jogador::all();
+
+        $ranking = $jogadores->map(function ($jogador) {
+            $setsVencidos = Partida::where(function ($query) use ($jogador) {
+                $query->where('jogador1_id', $jogador->id)
+                      ->whereColumn('sets_jogador1', '>', 'sets_jogador2');
+            })->orWhere(function ($query) use ($jogador) {
+                $query->where('jogador2_id', $jogador->id)
+                      ->whereColumn('sets_jogador2', '>', 'sets_jogador1');
+            })->count();
+
+            return [
+                'jogador' => $jogador,
+                'sets_vencidos' => $setsVencidos
+            ];
+        })->sortByDesc('sets_vencidos');
 
         return view('ranking.sets', compact('ranking'));
     }

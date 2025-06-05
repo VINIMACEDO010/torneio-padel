@@ -10,10 +10,10 @@ use Illuminate\Http\Request;
 class PartidaController extends Controller
 {
     public function index()
-    {
-        $partidas = Partida::with('torneio', 'jogador1', 'jogador2')->get();
-        return view('partidas.index', compact('partidas'));
-    }
+{
+    $partidas = Partida::with('torneio', 'jogador1', 'jogador2')->paginate(10);
+    return view('partidas.index', compact('partidas'));
+}
 
     public function edit(Partida $partida)
     {

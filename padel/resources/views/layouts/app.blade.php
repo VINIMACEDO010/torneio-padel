@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Torneio</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        a, button { margin: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    </style>
+    <meta charset="UTF-8">
+    <title>Torneio de Padel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <a href="{{ route('jogadors.index') }}">Jogadores</a>
-        <a href="{{ route('torneios.index') }}">Torneios</a>
-        <a href="{{ route('partidas.index') }}">Partidas</a>
-        <a href="{{ route('ranking.sets') }}">Ranking</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">Torneio de Padel</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+                        <a class="nav-link" href="{{ route('jogadors.index') }}">
+                <i class="bi bi-person"></i> Jogadores
+            </a>
+            <a class="nav-link" href="{{ route('torneios.index') }}">
+                <i class="bi bi-trophy"></i> Torneios
+            </a>
+            <a class="nav-link" href="{{ route('partidas.index') }}">
+                <i class="bi bi-controller"></i> Partidas
+            </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
-    <hr>
+    <main class="container">
+        @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+        @yield('content')
+    </main>
 
-    @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
-
-    @yield('content')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

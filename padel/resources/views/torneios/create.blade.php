@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Novo Torneio</h2>
+<div class="container">
+    <h1>Cadastrar Torneio</h1>
     <form action="{{ route('torneios.store') }}" method="POST">
         @csrf
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
-        <label>Data Início:</label>
-        <input type="date" name="data_inicio" required>
-        <label>Data Fim:</label>
-        <input type="date" name="data_fim" required>
-        <button type="submit">Criar</button>
+        <div class="form-group">
+            <label for="nome">Nome do Torneio</label>
+            <input type="text" name="nome" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success mt-2">Salvar</button>
     </form>
+</div>
 @endsection

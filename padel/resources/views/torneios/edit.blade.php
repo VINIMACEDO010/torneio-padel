@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="container">
-    <h1>Editar Jogador</h1>
-    <form action="{{ route('jogadors.update', $jogador) }}" method="POST">
+    <h1>Editar Torneio</h1>
+    <form action="{{ route('torneios.update', $torneio) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="nome">Nome do Jogador</label>
-            <input type="text" name="nome" class="form-control" value="{{ $jogador->nome }}" required>
+            <label for="nome">Nome do Torneio</label>
+            <input type="text" name="nome" class="form-control" value="{{ $torneio->nome }}" required>
         </div>
         <button type="submit" class="btn btn-primary mt-2">Atualizar</button>
     </form>

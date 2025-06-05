@@ -9,7 +9,7 @@ class JogadorController extends Controller
 {
     public function index()
     {
-        $jogadores = Jogador::all();
+        $jogadores = Jogador::paginate(10); // exemplo
         return view('jogadors.index', compact('jogadores'));
     }
 
