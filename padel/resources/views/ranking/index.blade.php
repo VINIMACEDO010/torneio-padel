@@ -2,24 +2,29 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4">Ranking de Jogadores (por Vitórias)</h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Posição</th>
-                <th>Jogador</th>
-                <th>Vitórias</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($ranking as $index => $item)
+    <h1 class="mb-4">Ranking de Jogadores (Sets Vencidos)</h1>
+
+    @if(count($ranking))
+        <table class="table table-bordered">
+            <thead class="table-light">
                 <tr>
-                    <td>{{ $index + 1 }}º</td>
-                    <td>{{ $item['jogador'] }}</td>
-                    <td>{{ $item['vitorias'] }}</td>
+                    <th>Posição</th>
+                    <th>Jogador</th>
+                    <th>Sets Vencidos</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($ranking as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item['jogador'] }}</td>
+                        <td>{{ $item['sets_vencidos'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <div class="alert alert-info">Nenhuma partida registrada ainda.</div>
+    @endif
 </div>
 @endsection
