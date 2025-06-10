@@ -21,9 +21,12 @@ class RankingController extends Controller
                 if (!empty($p->resultado)) {
                     $placares = explode(' ', $p->resultado);
                     foreach ($placares as $placar) {
-                        [$j1, $j2] = explode('x', $placar);
-                        if ((int)$j1 > (int)$j2) {
-                            $sets_vencidos++;
+                        $set = explode('x', $placar);
+                        if (count($set) === 2) {
+                            [$j1, $j2] = $set;
+                            if ((int)$j1 > (int)$j2) {
+                                $sets_vencidos++;
+                            }
                         }
                     }
                 }
@@ -35,9 +38,12 @@ class RankingController extends Controller
                 if (!empty($p->resultado)) {
                     $placares = explode(' ', $p->resultado);
                     foreach ($placares as $placar) {
-                        [$j1, $j2] = explode('x', $placar);
-                        if ((int)$j2 > (int)$j1) {
-                            $sets_vencidos++;
+                        $set = explode('x', $placar);
+                        if (count($set) === 2) {
+                            [$j1, $j2] = $set;
+                            if ((int)$j2 > (int)$j1) {
+                                $sets_vencidos++;
+                            }
                         }
                     }
                 }
