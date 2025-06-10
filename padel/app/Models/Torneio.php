@@ -9,10 +9,5 @@ class Torneio extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'data_inicio', 'data_fim'];
-
-    public function partidas()
-    {
-        return $this->hasMany(Partida::class);
-    }
+    protected $fillable = ['nome', 'categoria', 'max_participantes'];
 }
