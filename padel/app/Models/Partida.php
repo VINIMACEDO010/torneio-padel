@@ -15,7 +15,9 @@ class Partida extends Model
         'jogador2_id',
         'sets_jogador1',
         'sets_jogador2',
-        'resultado'
+        'resultado',
+        // datetime of the match
+        'data_partida'
     ];
 
     public function torneio()

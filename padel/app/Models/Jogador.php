@@ -9,7 +9,8 @@ class Jogador extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome'];
+    // Allow mass assignment for both the player's name and gender
+    protected $fillable = ['nome', 'genero'];
 
     public function partidasComoJogador1()
     {

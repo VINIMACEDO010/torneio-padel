@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Torneio;
+use App\Models\Jogador;
+use App\Models\Partida;
 use Illuminate\Http\Request;
 
 class TorneioController extends Controller
@@ -35,5 +37,30 @@ class TorneioController extends Controller
     {
         $torneio->delete();
         return redirect()->route('torneios.index')->with('success', 'Torneio excluído!');
+    }
+
+    /**
+     * Gera partidas para o torneio informado.
+     */
+    public function gerarPartidas(int $id)
+    {
+        $torneio = Torneio::findOrFail($id);
+
+        $jogadores = Jogador::all();
+        $total = $jogadores->count();
+
+        for ($i = 0; $i < $total; $i++) {
+            for ($j = $i + 1; $j < $total; $j++) {
+                Partida::firstOrCreate([
+                    'torneio_id' => $torneio->id,
+                    'jogador1_id' => $jogadores[$i]->id,
+                    'jogador2_id' => $jogadores[$j]->id,
+                ], [
+                    'data_partida' => now(),
+                ]);
+            }
+        }
+
+        return redirect()->route('partidas.index')->with('success', 'Partidas geradas com sucesso!');
     }
 }
