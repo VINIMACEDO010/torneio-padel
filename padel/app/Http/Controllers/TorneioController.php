@@ -9,9 +9,16 @@ use Illuminate\Http\Request;
 
 class TorneioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $torneios = Torneio::all();
+        $query = Torneio::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('nome', 'like', "%{$search}%");
+        }
+
+        $torneios = $query->paginate(10);
         return view('torneios.index', compact('torneios'));
     }
 

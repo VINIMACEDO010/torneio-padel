@@ -3,7 +3,15 @@
 @section('content')
 <div class="container">
     <h1 class="mb-4">Lista de Torneios</h1>
-    <a href="{{ route('torneios.create') }}" class="btn btn-primary mb-3">Novo Torneio</a>
+
+    <form method="GET" action="{{ route('torneios.index') }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar torneio" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <a href="{{ route('torneios.create') }}" class="btn btn-success mb-3">Novo Torneio</a>
 
     @if($torneios->count())
         <table class="table table-bordered">
@@ -26,13 +34,14 @@
                             <form action="{{ route('torneios.destroy', $torneio) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir o torneio?')">Excluir</button>
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir?')">Excluir</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        {{ $torneios->appends(['search' => request('search')])->links() }}
     @else
         <div class="alert alert-info">Nenhum torneio cadastrado.</div>
     @endif

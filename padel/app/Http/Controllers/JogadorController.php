@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class JogadorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jogadores = Jogador::paginate(10);
+        $query = Jogador::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('nome', 'like', "%{$search}%");
+        }
+
+        $jogadores = $query->paginate(10);
         return view('jogadors.index', compact('jogadores'));
     }
 
