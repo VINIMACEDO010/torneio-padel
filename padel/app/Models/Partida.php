@@ -33,3 +33,4 @@ class Partida extends Model
         return $this->belongsTo(Jogador::class, 'jogador2_id');
     }
     
+}

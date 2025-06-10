@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Jogador;
 use App\Models\Partida;
-use Illuminate\Http\Request;
 
 class RankingController extends Controller
 {
@@ -14,24 +13,44 @@ class RankingController extends Controller
         $ranking = [];
 
         foreach ($jogadores as $jogador) {
-            $vitorias = Partida::where(function($query) use ($jogador) {
-                $query->where('jogador1_id', $jogador->id)
-                      ->where('resultado', 'jogador1');
-            })->orWhere(function($query) use ($jogador) {
-                $query->where('jogador2_id', $jogador->id)
-                      ->where('resultado', 'jogador2');
-            })->count();
+            $sets_vencidos = 0;
+
+            // Buscar partidas como jogador1
+            $partidas1 = Partida::where('jogador1_id', $jogador->id)->get();
+            foreach ($partidas1 as $p) {
+                if (!empty($p->resultado)) {
+                    $placares = explode(' ', $p->resultado);
+                    foreach ($placares as $placar) {
+                        [$j1, $j2] = explode('x', $placar);
+                        if ((int)$j1 > (int)$j2) {
+                            $sets_vencidos++;
+                        }
+                    }
+                }
+            }
+
+            // Buscar partidas como jogador2
+            $partidas2 = Partida::where('jogador2_id', $jogador->id)->get();
+            foreach ($partidas2 as $p) {
+                if (!empty($p->resultado)) {
+                    $placares = explode(' ', $p->resultado);
+                    foreach ($placares as $placar) {
+                        [$j1, $j2] = explode('x', $placar);
+                        if ((int)$j2 > (int)$j1) {
+                            $sets_vencidos++;
+                        }
+                    }
+                }
+            }
 
             $ranking[] = [
                 'jogador' => $jogador->nome,
-                'vitorias' => $vitorias
+                'sets_vencidos' => $sets_vencidos
             ];
         }
 
-        // Ordenar por vitórias desc
-        usort($ranking, fn($a, $b) => $b['vitorias'] <=> $a['vitorias']);
+        usort($ranking, fn($a, $b) => $b['sets_vencidos'] <=> $a['sets_vencidos']);
 
         return view('ranking.index', compact('ranking'));
     }
 }
-

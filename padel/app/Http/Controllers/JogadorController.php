@@ -9,7 +9,7 @@ class JogadorController extends Controller
 {
     public function index()
     {
-        $jogadores = Jogador::paginate(10); // exemplo
+        $jogadores = Jogador::paginate(10);
         return view('jogadors.index', compact('jogadores'));
     }
 
@@ -20,7 +20,10 @@ class JogadorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['nome' => 'required|string|max:255']);
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'genero' => 'required|in:masculino,feminino,misto'
+        ]);
         Jogador::create($request->all());
         return redirect()->route('jogadors.index')->with('success', 'Jogador cadastrado com sucesso!');
     }
@@ -37,7 +40,10 @@ class JogadorController extends Controller
 
     public function update(Request $request, Jogador $jogador)
     {
-        $request->validate(['nome' => 'required|string|max:255']);
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'genero' => 'required|in:masculino,feminino,misto'
+        ]);
         $jogador->update($request->all());
         return redirect()->route('jogadors.index')->with('success', 'Jogador atualizado!');
     }

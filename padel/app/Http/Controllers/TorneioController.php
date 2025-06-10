@@ -23,32 +23,32 @@ class TorneioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nome' => 'required',
-            'data_inicio' => 'required|date',
-            'data_fim' => 'required|date|after_or_equal:data_inicio',
+            'nome' => 'required|string|max:255',
+            'categoria' => 'required|in:masculino,feminino,misto',
+            'max_participantes' => 'required|integer|min:2'
         ]);
 
         Torneio::create($request->all());
         return redirect()->route('torneios.index')->with('success', 'Torneio criado com sucesso!');
     }
 
-public function gerarPartidas($torneioId)
-{
-    $torneio = Torneio::findOrFail($torneioId);
-    $jogadores = Jogador::all();
+    public function gerarPartidas($torneioId)
+    {
+        $torneio = Torneio::findOrFail($torneioId);
+        $jogadores = Jogador::where('genero', $torneio->categoria)->get();
 
-    // Geração de combinações únicas
-    for ($i = 0; $i < count($jogadores); $i++) {
-        for ($j = $i + 1; $j < count($jogadores); $j++) {
-            Partida::create([
-                'torneio_id' => $torneio->id,
-                'jogador1_id' => $jogadores[$i]->id,
-                'jogador2_id' => $jogadores[$j]->id,
-                'resultado' => null
-            ]);
+        // Geração de combinações únicas
+        for ($i = 0; $i < count($jogadores); $i++) {
+            for ($j = $i + 1; $j < count($jogadores); $j++) {
+                Partida::create([
+                    'torneio_id' => $torneio->id,
+                    'jogador1_id' => $jogadores[$i]->id,
+                    'jogador2_id' => $jogadores[$j]->id,
+                    'resultado' => null
+                ]);
+            }
         }
-    }
 
-    return redirect()->route('partidas.index')->with('success', 'Partidas geradas com sucesso!');
-}
+        return redirect()->route('partidas.index')->with('success', 'Partidas geradas com sucesso!');
+    }
 }
